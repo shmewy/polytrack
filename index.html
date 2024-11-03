@@ -1,24 +1,39 @@
 <!DOCTYPE html>
-
 <html>
-	<head>
-		<script>let x=prompt("testing, testing, 1,2,3... Yay it works!")</script>
-		<script>if (x=="polytrack") {
-				alert("sigma")
-			} else {
-				alert("ok testing done bye")
-				window.close()
-			}
-		</script>
-	</head>
-		<link rel="manifest" href="manifest.json" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-	</head>
-	<body>
-		<canvas id="screen"></canvas>
-		<div id="ui"></div>
-		<div id="transition-layer"></div>
+<head>
+    <script>
+        // Wait until the user types "polytrack" in the prompt before proceeding
+        let x;
+        while (x !== "polytrack") {
+            x = prompt("Testing, testing, 1, 2, 3...");
+            if (x === null) {
+                // If the user cancels the prompt, exit the script gracefully
+                alert("Prompt canceled. The page will not load.");
+                window.close();  // This may not always work depending on browser settings
+                throw new Error("User canceled the prompt"); // Stops the script
+            }
+        }
 
-		<script type="module" src="main.bundle.js" defer></script>
-	</body>
+        // If the correct input is given
+        alert("Correct! Now loading the page...");
+    </script>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body>
+    <!-- Hide the main content initially -->
+    <div id="page-content" style="display: none;">
+        <canvas id="screen"></canvas>
+        <div id="ui"></div>
+        <div id="transition-layer"></div>
+        <script type="module" src="main.bundle.js" defer></script>
+    </div>
+
+    <script>
+        // Once the correct input is given, display the main content
+        window.onload = function() {
+            document.getElementById('page-content').style.display = 'block';
+        };
+    </script>
+</body>
 </html>
