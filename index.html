@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-        // Wait until the user types "polytrack" in the prompt before proceeding
-        let x;
-        while (x !== "polytrack") {
-            x = prompt("Testing, testing, 1, 2, 3...");
-            if (x === null) {
-                // If the user cancels the prompt, exit the script gracefully
-                alert("Prompt canceled. The page will not load.");
-                window.close();  // This may not always work depending on browser settings
-                throw new Error("User canceled the prompt"); // Stops the script
-            }
-        }
-
-        // If the correct input is given
-        alert("Correct! Now loading the page...");
-    </script>
-    <link rel="manifest" href="manifest.json" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Prompt Before Loading Page</title>
+    <link rel="manifest" href="manifest.json" />
+    <script>
+        // Hide the body by default to prevent content from loading until the prompt is validated
+        document.documentElement.style.display = 'none';
+
+        // Function to prompt until correct value is entered
+        (function() {
+            let x = null;
+            while (x !== "polytrack") {
+                x = prompt("Testing, testing, 1, 2, 3... Please type 'polytrack' to continue.");
+                if (x === null) {
+                    // If user cancels, stop the script and do not load the page
+                    alert("You have canceled the prompt. The page will not load.");
+                    throw new Error("User canceled the prompt."); // Stop further execution
+                }
+            }
+            // If correct input is entered, reveal the page content
+            document.documentElement.style.display = '';
+            alert("Correct! Now loading the page...");
+        })();
+    </script>
 </head>
 <body>
-    <!-- Hide the main content initially -->
-    <div id="page-content" style="display: none;">
-        <canvas id="screen"></canvas>
-        <div id="ui"></div>
-        <div id="transition-layer"></div>
-        <script type="module" src="main.bundle.js" defer></script>
-    </div>
+    <canvas id="screen"></canvas>
+    <div id="ui"></div>
+    <div id="transition-layer"></div>
 
-    <script>
-        // Once the correct input is given, display the main content
-        window.onload = function() {
-            document.getElementById('page-content').style.display = 'block';
-        };
-    </script>
+    <script type="module" src="main.bundle.js" defer></script>
 </body>
 </html>
